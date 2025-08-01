@@ -1,0 +1,32 @@
+{
+  "pdf_filename": "trade_republic.pdf",
+  "currency_symbol": "€",
+  "show_preview": false,
+  "extract_last_page": false,
+  "dpi": 200,
+  "resize_px": [595, 841.88],
+  "columns": [
+    "DATA",
+    "TIPO", 
+    "DESCRIZIONE",
+    "IN ENTRATA",
+    "IN USCITA",
+    "SALDO"
+  ],
+  "valid_types": [
+    "Transazione con carta",
+    "Bonifico SEPA istantaneo", 
+    "Commercio",
+    "Commissione"
+  ],
+  "header_alignment_map": {
+    "DATA": "left",
+    "TIPO": "left", 
+    "DESCRIZIONE": "left",
+    "IN ENTRATA": "left",
+    "IN USCITA": "left",
+    "SALDO": "right"
+  },
+  "area_first": [343, 42, 770, 552],
+  "area_default": [55, 42, 770, 552]
+}
