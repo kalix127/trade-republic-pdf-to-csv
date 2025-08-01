@@ -66,7 +66,7 @@ cd trade-republic-pdf-to-csv
 
 **Create and activate virtual environment:**
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -80,14 +80,11 @@ pip install -r requirements.txt
 mkdir input
 ```
 
-**Copy your Trade Republic PDF to input directory:**
-```bash
-cp ~/Downloads/your-statement.pdf input/
-```
+**Place your Trade Republic PDF statement in the input/ directory**
 
 **Run the converter:**
 ```bash
-python main.py
+python3 main.py
 ```
 
 </details>
@@ -111,10 +108,7 @@ pip install -r requirements.txt
 mkdir input
 ```
 
-**Copy your Trade Republic PDF to input directory:**
-```cmd
-copy "%USERPROFILE%\Downloads\your-statement.pdf" input\
-```
+**Place your Trade Republic PDF statement in the input\ directory**
 
 **Run the converter:**
 ```cmd
