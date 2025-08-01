@@ -1,10 +1,5 @@
 # Trade Republic PDF to CSV Converter
 
-<div align="center">
-
-🌐 **Language:** [🇺🇸 English](README.md) | [🇮🇹 Italiano](README.it.md)
-
-</div>
 
 ## 📚 Table of Contents
 
