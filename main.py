@@ -362,12 +362,12 @@ def get_trade_republic_data(tr_file) -> list[pd.DataFrame]:
 
 def save_csv_output(transactions: pd.DataFrame, trades: pd.DataFrame, output_dir: str = OUTPUT_DIR) -> None:
     """
-    Save the extracted data to 3 CSV files: transactions, trades, and combined.
+    Save the extracted data to 2 CSV files: transactions and trades.
     
     Parameters:
     -----------
     transactions : pd.DataFrame
-        Non-trading transactions (cards, transfers, fees)
+        Non-trading transactions (cards, bank transfers, fees, cashback, etc.)
     trades : pd.DataFrame  
         Trading transactions (buy/sell)
     output_dir : str
@@ -375,47 +375,16 @@ def save_csv_output(transactions: pd.DataFrame, trades: pd.DataFrame, output_dir
     """
     Path(output_dir).mkdir(exist_ok=True)
     
-    # Always save 3 separate files
+    # Save only 2 separate files
     transactions_file = Path(output_dir) / "transactions.csv"
     trades_file = Path(output_dir) / "trades.csv"
-    combined_file = Path(output_dir) / "combined.csv"
     
-    # Save separate files
+    # Save files
     transactions.to_csv(transactions_file, index=False, encoding='utf-8')
     trades.to_csv(trades_file, index=False, encoding='utf-8')
     
-    # Create combined file with source column
-    transactions_marked = transactions.copy()
-    trades_marked = trades.copy()
-    
-    transactions_marked['SOURCE'] = 'TRANSACTION'
-    trades_marked['SOURCE'] = 'TRADE'
-    
-    # Align columns (fill missing columns with empty values)
-    all_columns = set(transactions.columns) | set(trades.columns) | {'SOURCE'}
-    
-    for col in all_columns:
-        if col not in transactions_marked.columns:
-            transactions_marked[col] = None
-        if col not in trades_marked.columns:
-            trades_marked[col] = None
-    
-    # Reorder columns to have common ones first
-    common_cols = ['DATA', 'SOURCE']
-    other_cols = sorted([col for col in all_columns if col not in common_cols])
-    column_order = common_cols + other_cols
-    
-    transactions_marked = transactions_marked[column_order]
-    trades_marked = trades_marked[column_order]
-    
-    combined = pd.concat([transactions_marked, trades_marked], ignore_index=True)
-    combined = combined.sort_values('DATA', ascending=False).reset_index(drop=True)
-    
-    combined.to_csv(combined_file, index=False, encoding='utf-8')
-    
     print(f"✅ Transactions saved to: {transactions_file}")
     print(f"✅ Trades saved to: {trades_file}")
-    print(f"✅ Combined data saved to: {combined_file}")
     print(f"📊 Extracted {len(transactions)} transactions and {len(trades)} trades")
 
 

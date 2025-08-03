@@ -24,7 +24,7 @@ This tool extracts transaction data from Trade Republic PDF statements and conve
 ### Key Features
 
 - **PDF Processing**: Extracts data from Trade Republic PDF statements using OCR and table detection
-- **Triple CSV Output**: Always generates 3 CSV files - transactions, trades, and combined data
+- **Dual CSV Output**: Generates 2 CSV files - transactions (cards, transfers, fees, cashback) and trades (buy/sell)
 - **Visual Debugging**: Optional grid overlay to visualize extraction areas
 - **Multi-row Cell Handling**: Automatically combines split table cells
 - **Transaction Parsing**: Intelligently parses trade descriptions to extract ISIN, quantities, and trade types
@@ -123,10 +123,9 @@ python main.py
    - Adjust other settings if needed (see [Configuration Guide](#️-configuration-guide))
 
 4. **Output**
-   - The tool will create three CSV files in the `output/` directory:
-     - `transactions.csv` - Non-trading transactions
-     - `trades.csv` - Trading activities
-     - `combined.csv` - All data combined
+   - The tool will create two CSV files in the `output/` directory:
+     - `transactions.csv` - Non-trading transactions (cards, bank transfers, fees, cashback)
+     - `trades.csv` - Trading activities (buy/sell)
 
 ## Project Structure
 
@@ -220,10 +219,9 @@ The tool uses a coordinate-based grid system:
 
 ### 4. Output Files
 
-The tool always generates 3 CSV files:
-- `transactions.csv`: Card payments, transfers, fees, and other non-trading activities
+The tool generates 2 CSV files:
+- `transactions.csv`: Card payments, bank transfers, fees, cashback, and other non-trading activities
 - `trades.csv`: Buy/sell trades with parsed details (ISIN, quantities, trade types)
-- `combined.csv`: All data in a single file with SOURCE column distinguishing record types
 
 ## Output Columns
 

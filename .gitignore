@@ -13,3 +13,6 @@ output
 settings.json
 
 README.it.md
+
+python-api/*.py
+python-api/*.txt
