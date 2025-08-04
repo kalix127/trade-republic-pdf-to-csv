@@ -26,8 +26,8 @@ services:
     container_name: tr-web-ui
     environment:
       - NODE_ENV=production
-      - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3001
+      - NITRO_HOST=0.0.0.0
+      - NITRO_PORT=3001
       - PYTHON_API_URL=http://python-api:8000
     ports:
       - "3001:3001"

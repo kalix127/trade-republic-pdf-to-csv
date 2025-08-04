@@ -48,7 +48,9 @@ USER nuxt
 
 EXPOSE 3001
 
-ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=3001
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3001
+
+
 
 CMD ["node", ".output/server/index.mjs"]
