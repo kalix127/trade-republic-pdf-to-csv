@@ -111,6 +111,7 @@ export default defineI18nConfig(() => ({
         acceptanceRequired: "By accepting, you agree to our privacy policy and data processing terms.",
         codeTransparency: "You can review our code for transparency at:",
         repositoryLink: "GitHub Repository",
+        consultPolicy: "You can consult our privacy policy here:",
         accept: "Accept and Continue",
         reject: "Reject",
         sections: {
@@ -349,6 +350,7 @@ export default defineI18nConfig(() => ({
         acceptanceRequired: "Accettando, accetti la nostra informativa sulla privacy e i termini di elaborazione dei dati.",
         codeTransparency: "Puoi rivedere il nostro codice per trasparenza su:",
         repositoryLink: "Repository GitHub",
+        consultPolicy: "Puoi consultare la nostra informativa sulla privacy qui:",
         accept: "Accetta e Continua",
         reject: "Rifiuta",
         sections: {

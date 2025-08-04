@@ -43,6 +43,13 @@ function handleReject() {
             {{ $t('privacy.repositoryLink') }}
           </NuxtLink>
         </p>
+
+        <p class="text-sm text-muted-foreground">
+          {{ $t('privacy.consultPolicy') }}
+          <NuxtLink to="/privacy" class="text-primary hover:text-primary/80 underline transition-colors">
+            {{ $t('footer.privacy') }}
+          </NuxtLink>
+        </p>
       </div>
 
       <UiAlertDialogFooter class="gap-2">
