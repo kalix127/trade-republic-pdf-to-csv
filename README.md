@@ -1,5 +1,6 @@
 # Trade Republic PDF to CSV Converter
 
+> **🌐 Try the web version (no installation required):** [https://trade-republic-pdf-to-csv.online](https://trade-republic-pdf-to-csv.online)
 
 ## 📚 Table of Contents
 
@@ -356,14 +357,19 @@ This is extremely useful for:
 
 This project is provided as-is for personal use. Feel free to fork and modify for your own needs.
 
-## Would You Prefer a Web Solution?
+## 🌐 Web UI Available
 
-I'm considering creating a simple website where you could:
-- Upload your Trade Republic PDF
-- Get the CSV files instantly downloaded
-- No installation or technical setup required
+**No installation required!** Try the web interface at:
 
-If this would be useful for you, **please let me know** by emailing [info@gianlucaiavicoli.dev](mailto:info@gianlucaiavicoli.dev?)
+**🔗 [https://trade-republic-pdf-to-csv.online](https://trade-republic-pdf-to-csv.online)**
+
+The web UI offers:
+- **Instant processing**: Upload your Trade Republic PDF and get CSV files immediately
+- **No setup required**: Works directly in your browser
+- **Same functionality**: Uses the same processing engine as this command-line tool
+- **Secure**: Files are processed server-side and automatically deleted after conversion
+
+Perfect for users who prefer a simple web interface over command-line tools!
 
 ## Contact
 
