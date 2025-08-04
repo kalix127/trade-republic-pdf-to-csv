@@ -8,16 +8,16 @@ services:
       - ENVIRONMENT=production
       - PORT=8000
     ports:
-      - "8000:8000"
+      - "8001:8000"
     networks:
       - tr-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
   web-ui:
     build:
       context: .
@@ -27,10 +27,10 @@ services:
     environment:
       - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3000
+      - NUXT_PORT=3001
       - PYTHON_API_URL=http://python-api:8000
     ports:
-      - "3000:3000"
+      - "3001:3001"
     networks:
       - tr-network
     depends_on:

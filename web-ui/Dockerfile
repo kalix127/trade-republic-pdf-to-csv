@@ -46,9 +46,9 @@ RUN groupadd --gid 1001 nodejs && \
 RUN chown -R nuxt:nodejs /app
 USER nuxt
 
-EXPOSE 3000
+EXPOSE 3001
 
 ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=3000
+ENV NUXT_PORT=3001
 
 CMD ["node", ".output/server/index.mjs"]
