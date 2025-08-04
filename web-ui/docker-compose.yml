@@ -1,0 +1,44 @@
+services:
+  python-api:
+    build:
+      context: ./python-api
+      dockerfile: Dockerfile
+    container_name: tr-python-api
+    environment:
+      - ENVIRONMENT=production
+      - PORT=8000
+    ports:
+      - "8000:8000"
+    networks:
+      - tr-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  web-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: tr-web-ui
+    environment:
+      - NODE_ENV=production
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - PYTHON_API_URL=http://python-api:8000
+    ports:
+      - "3000:3000"
+    networks:
+      - tr-network
+    depends_on:
+      python-api:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  tr-network:
+    driver: bridge
+    name: trade-republic-network
