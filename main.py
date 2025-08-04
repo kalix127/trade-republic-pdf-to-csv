@@ -383,9 +383,9 @@ def save_csv_output(transactions: pd.DataFrame, trades: pd.DataFrame, output_dir
     transactions.to_csv(transactions_file, index=False, encoding='utf-8')
     trades.to_csv(trades_file, index=False, encoding='utf-8')
     
-    print(f"✅ Transactions saved to: {transactions_file}")
-    print(f"✅ Trades saved to: {trades_file}")
-    print(f"📊 Extracted {len(transactions)} transactions and {len(trades)} trades")
+    print(f"Transactions saved to: {transactions_file}")
+    print(f"Trades saved to: {trades_file}")
+    print(f"Extracted {len(transactions)} transactions and {len(trades)} trades")
 
 
 def main():
@@ -396,12 +396,12 @@ def main():
     tr_file = Path(INPUT_DIR) / S["pdf_filename"]
     
     if not tr_file.exists():
-        print(f"❌ PDF file not found: {tr_file}")
-        print(f"   Please check the 'pdf_filename' setting in settings.json")
-        print(f"   Make sure the file exists in the {INPUT_DIR}/ directory")
+        print(f"PDF file not found: {tr_file}")
+        print(f"Please check the 'pdf_filename' setting in settings.json")
+        print(f"Make sure the file exists in the {INPUT_DIR}/ directory")
         return
     
-    print(f"🔍 Processing: {tr_file}")
+    print(f"Processing: {tr_file}")
     
     try:
         # Extract data from PDF
@@ -410,11 +410,11 @@ def main():
         # Save CSV output (always 3 files)
         save_csv_output(transactions, trades)
         
-        print("✨ Processing completed successfully!")
+        print("Processing completed successfully!")
         
     except Exception as e:
-        print(f"❌ Error processing PDF: {e}")
-        print("💡 Try adjusting settings in settings.json or enable show_preview for debugging")
+        print(f"Error processing PDF: {e}")
+        print("Try adjusting settings in settings.json or enable show_preview for debugging")
 
 
 if __name__ == "__main__":

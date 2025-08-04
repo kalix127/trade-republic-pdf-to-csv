@@ -14,5 +14,16 @@ settings.json
 
 README.it.md
 
-python-api/*.py
-python-api/*.txt
+web-ui/python-api/main.py
+web-ui/python-api/requirements.txt
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
