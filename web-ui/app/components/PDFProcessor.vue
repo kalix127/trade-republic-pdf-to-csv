@@ -220,7 +220,7 @@ function reset() {
           class="px-8 py-3 shadow-md flex items-center gap-2"
           @click="processPDFFile"
         >
-          <Icon name="solar:play-bold" class="w-5 h-5" />
+          <Icon name="solar:play-bold" size="24" />
           <span>{{ $t('pdfProcessor.processPdf') }}</span>
         </UiButton>
       </div>
@@ -228,7 +228,7 @@ function reset() {
       <div v-if="pendingProcessing && showPrivacyModal" class="border border-border rounded-lg p-6">
         <div class="flex items-center gap-4">
           <div class="animate-spin">
-            <Icon name="solar:refresh-bold" class="w-8 h-8 text-primary" />
+            <Icon name="solar:refresh-bold" class="text-primary" size="24" />
           </div>
           <div>
             <h3 class="text-lg font-medium text-foreground">
@@ -244,7 +244,7 @@ function reset() {
       <div v-if="processing" class="border border-border rounded-lg p-6">
         <div class="flex items-center gap-4">
           <div class="animate-spin">
-            <Icon name="solar:refresh-bold" class="w-8 h-8 text-primary" />
+            <Icon name="solar:refresh-bold" class="text-primary" size="24" />
           </div>
           <div>
             <h3 class="text-lg font-medium text-foreground">
@@ -258,8 +258,8 @@ function reset() {
       </div>
 
       <div v-if="error" class="bg-destructive/10 rounded-lg p-6">
-        <div class="flex items-start gap-4">
-          <Icon name="solar:danger-triangle-bold" class="w-8 h-8 text-destructive flex-shrink-0" />
+        <div class="flex items-center gap-4">
+          <Icon name="solar:danger-triangle-bold" class="text-destructive" size="24" />
           <div>
             <h3 class="text-lg font-medium text-destructive">
               {{ $t('pdfProcessor.errorProcessing') }}
