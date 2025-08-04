@@ -28,6 +28,11 @@ const FILES_TO_COPY = [
     target: join(PYTHON_API_DIR, "requirements.txt"),
     name: "requirements.txt",
   },
+  {
+    source: join(ROOT_DIR, "settings.json"),
+    target: join(PYTHON_API_DIR, "settings.json"),
+    name: "settings.json",
+  },
 ];
 
 async function fileExists(path) {
