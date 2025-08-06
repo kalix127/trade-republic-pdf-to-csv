@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxt/icon",
-    "@nuxt/scripts",
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@nuxtjs/i18n",
