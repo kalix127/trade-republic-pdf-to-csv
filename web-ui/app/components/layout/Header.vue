@@ -18,8 +18,14 @@ const { githubRepositoryUrl, projectName } = useAppConfig();
 
           <ThemeToggle />
 
-          <NuxtLink :href="githubRepositoryUrl" target="_blank" rel="noopener noreferrer">
-            <UiButton variant="outline" size="icon" class="cursor-pointer">
+          <NuxtLink
+            :href="githubRepositoryUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub repository"
+            title="GitHub repository"
+          >
+            <UiButton variant="outline" size="icon" class="cursor-pointer" aria-label="GitHub repository">
               <Icon name="mdi:github" size="18" />
             </UiButton>
           </NuxtLink>

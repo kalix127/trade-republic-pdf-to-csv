@@ -15,6 +15,13 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "it",
+      },
+    },
+  },
   css: ["~/assets/css/main.css"],
   shadcn: {
     prefix: "Ui",

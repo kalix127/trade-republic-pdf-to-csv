@@ -11,6 +11,8 @@ function toggleDark() {
     variant="outline"
     size="icon"
     class="cursor-pointer"
+    :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+    :title="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
     @click="toggleDark"
   >
     <Icon
