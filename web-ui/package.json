@@ -43,5 +43,10 @@
     "@antfu/eslint-config": "^5.1.0",
     "eslint": "^9.32.0",
     "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "devalue": ">=5.3.2"
+    }
   }
 }
