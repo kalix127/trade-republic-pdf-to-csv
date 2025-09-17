@@ -7,7 +7,7 @@
   "resize_px": [595, 841.88],
   "columns": [
     "DATA",
-    "TIPO", 
+    "TIPO",
     "DESCRIZIONE",
     "IN ENTRATA",
     "IN USCITA",
@@ -15,18 +15,28 @@
   ],
   "valid_types": [
     "Transazione con carta",
-    "Bonifico SEPA istantaneo", 
+    "Bonifico SEPA istantaneo",
     "Commercio",
     "Commissione"
   ],
   "header_alignment_map": {
     "DATA": "left",
-    "TIPO": "left", 
+    "TIPO": "left",
     "DESCRIZIONE": "left",
     "IN ENTRATA": "left",
     "IN USCITA": "left",
     "SALDO": "right"
   },
   "area_first": [343, 42, 770, 552],
-  "area_default": [55, 42, 770, 552]
+  "area_default": [55, 42, 770, 552],
+  "anchor_column": "TIPO",
+  "trade_type_name": "Commercio",
+  "column_mappings": {
+    "date": "DATA",
+    "type": "TIPO",
+    "description": "DESCRIZIONE",
+    "money_in": "IN ENTRATA",
+    "money_out": "IN USCITA",
+    "balance": "SALDO"
+  }
 }
