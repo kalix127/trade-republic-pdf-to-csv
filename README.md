@@ -19,11 +19,12 @@
 
 ## Overview
 
-This tool extracts transaction data from Trade Republic PDF statements and converts them to CSV format for easier analysis and integration with personal finance tools. It processes Italian Trade Republic statements and handles both cash transactions and trading activities.
+This tool extracts transaction data from Trade Republic PDF statements and converts them to CSV format for easier analysis and integration with personal finance tools. It supports multiple languages through configuration and handles both cash transactions and trading activities.
 
 ### Key Features
 
 - **PDF Processing**: Extracts data from Trade Republic PDF statements using OCR and table detection
+- **Language Support**: Configurable for any language through settings
 - **Dual CSV Output**: Generates 2 CSV files - transactions (cards, transfers, fees, cashback) and trades (buy/sell)
 - **Visual Debugging**: Optional grid overlay to visualize extraction areas
 - **Multi-row Cell Handling**: Automatically combines split table cells
@@ -33,7 +34,7 @@ This tool extracts transaction data from Trade Republic PDF statements and conve
 
 This is a **personal project** built specifically for my own finance tracking needs. I created this tool because I needed to extract and process my Trade Republic transaction data for personal accounting purposes.
 
-**Language Limitation:** This tool has been tested **only with Italian Trade Republic account statements**. Since I don't have access to statements in other languages, I cannot guarantee functionality with non-Italian Trade Republic accounts. However, the script can potentially be adapted for other languages through manual configuration of headers, valid transaction types, and extraction areas (requires technical knowledge and testing).
+**Language Support:** This tool is now **language-agnostic** and supports any Trade Republic language through configuration. The tool uses configurable settings that allow adaptation for any Trade Republic language by updating column names, transaction types, and header mappings in the settings.json file.
 
 **PDF Structure Dependency:** This script is hardcoded for the current Trade Republic PDF format. **If Trade Republic updates their PDF structure, this tool may stop working or produce incorrect results.** If this happens, please contact me at [info@gianlucaiavicoli.dev](mailto:info@gianlucaiavicoli.dev) and I'll investigate updating the extraction logic.
 
@@ -164,9 +165,12 @@ All settings are configured in `settings.json`. Here's a complete breakdown of e
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
-| `columns` | array | `["DATA", "TIPO", ...]` | Expected column headers in Italian |
-| `valid_types` | array | Transaction types to extract | Only process rows with these TIPO values |
+| `columns` | array | `["DATA", "TIPO", ...]` | Expected column headers in your language |
+| `valid_types` | array | Transaction types to extract | Only process rows with these transaction type values |
 | `header_alignment_map` | object | Column alignment settings | Controls text extraction alignment for each column |
+| `anchor_column` | string | `"TIPO"` | Column used for header detection |
+| `trade_type_name` | string | `"Commercio"` | Transaction type that identifies trades |
+| `column_mappings` | object | Maps logical names to actual columns | Language-independent column references |
 
 ### Extraction Areas (Pixel Coordinates)
 
@@ -183,13 +187,27 @@ All settings are configured in `settings.json`. Here's a complete breakdown of e
 }
 ```
 
-### Valid Transaction Types
+### Language Configuration Example
 
-The tool processes these Italian transaction types:
-- `"Transazione con carta"` - Card transactions
-- `"Bonifico SEPA istantaneo"` - SEPA instant transfers  
-- `"Commercio"` - Trading activities (buy/sell)
-- `"Commissione"` - Fees and commissions
+**Italian Configuration:**
+```json
+{
+  "columns": ["DATA", "TIPO", "DESCRIZIONE", "IN ENTRATA", "IN USCITA", "SALDO"],
+  "valid_types": ["Transazione con carta", "Bonifico SEPA istantaneo", "Commercio", "Commissione"],
+  "anchor_column": "TIPO",
+  "trade_type_name": "Commercio",
+  "column_mappings": {
+    "date": "DATA",
+    "type": "TIPO",
+    "description": "DESCRIZIONE",
+    "money_in": "IN ENTRATA",
+    "money_out": "IN USCITA",
+    "balance": "SALDO"
+  }
+}
+```
+
+For other languages, adapt the column names and transaction types to match your PDF's language.
 
 ## How It Works
 
