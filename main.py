@@ -41,8 +41,10 @@ def header_xcoords_in_bbox(
     page: pdfplumber.page.Page,
     bbox: Tuple[float, float, float, float],
     headers: Dict[str, str],
-    anchor: str = "TIPO",
+    anchor: str = None,
 ) -> Dict[str, float]:
+    if anchor is None:
+        anchor = S.get("anchor_column", "TIPO")
 
     sub   = page.crop(bbox)
     raw   = sub.extract_words(x_tolerance=1, y_tolerance=2, keep_blank_chars=True)
@@ -188,17 +190,22 @@ def combine_multirow_cells(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def tidy_money_cols(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
-    """Remove currency symbol and thousand separators, keep NaN."""
-    for c in cols:
-        df[c] = df[c].apply(
-            lambda v: v if pd.isna(v) else v.replace(S['currency_symbol'], "").replace(".", "").strip()
-        )
+def tidy_money_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove currency symbol and thousand separators from money columns, keep NaN."""
+    cm = S["column_mappings"]
+    money_cols = [cm["money_in"], cm["money_out"], cm["balance"]]
+
+    for c in money_cols:
+        if c in df.columns:
+            df[c] = df[c].apply(
+                lambda v: v if pd.isna(v) else v.replace(S['currency_symbol'], "").replace(".", "").strip()
+            )
     return df
 
 def validate_types(df: pd.DataFrame, valid_types: List[str]) -> pd.DataFrame:
-    """Keep only rows whose 'TIPO' value is in `valid_types`."""
-    mask = df["TIPO"].isin(valid_types)
+    """Keep only rows whose type column value is in `valid_types`."""
+    type_col = S["column_mappings"]["type"]
+    mask = df[type_col].isin(valid_types)
 
     return df.loc[mask].copy()
 
@@ -228,6 +235,11 @@ def setup():
     if not Path(OUTPUT_DIR).exists(): Path.mkdir(OUTPUT_DIR)
 
 def parse_trades(trades: pd.DataFrame) -> pd.DataFrame:
+    # Get column names from settings
+    cm = S["column_mappings"]
+    desc_col = cm["description"]
+    out_col = cm["money_out"]
+
     pattern = re.compile(
         r'''(?ix)
         ^\s*
@@ -243,8 +255,8 @@ def parse_trades(trades: pd.DataFrame) -> pd.DataFrame:
         ,\s*quantity:\s*
         (?P<qty>[0-9.,]+)
         ''')
-    
-    parsed = trades['DESCRIZIONE'].str.extract(pattern)
+
+    parsed = trades[desc_col].str.extract(pattern)
 
     parsed['TRADE_TYPE'] = (
         parsed['trade_type']
@@ -263,10 +275,13 @@ def parse_trades(trades: pd.DataFrame) -> pd.DataFrame:
 
     trades['PRICE'] = None
     trades['FEE'] = None
-    trades['AMOUNT'] = trades['IN USCITA']
+    trades['AMOUNT'] = trades[out_col]
     trades['QUANTITY'] = trades['QUANTITY'].str.replace(".", ",")
 
-    return trades[['DATA', 'NAME', 'ISIN', 'TRADE_TYPE', 'QUANTITY', 'FEE', 'AMOUNT', 'PRICE']]
+    # Use configured date column name
+    date_col = cm["date"]
+
+    return trades[[date_col, 'NAME', 'ISIN', 'TRADE_TYPE', 'QUANTITY', 'FEE', 'AMOUNT', 'PRICE']]
 
 
 def get_trade_republic_data(tr_file) -> list[pd.DataFrame]:
@@ -289,24 +304,33 @@ def get_trade_republic_data(tr_file) -> list[pd.DataFrame]:
                 area_px = S["area_default"]
 
             bbox_pts = px_area_to_pts(area_px, page.width, page.height)
-            hdr_x    = header_xcoords_in_bbox(page, bbox_pts, S["header_alignment_map"])
+            hdr_x    = header_xcoords_in_bbox(page, bbox_pts, S["header_alignment_map"], S.get("anchor_column"))
             
             if not hdr_x:
                 hdr_x = header_xcoords_in_bbox(
                     page,
                     (0, 0, page.width, page.height),
-                    S["header_alignment_map"]
+                    S["header_alignment_map"],
+                    S.get("anchor_column")
                 )
 
             if not hdr_x:
                 break
 
+            # Use column mappings to get the actual column names
+            cm = S["column_mappings"]
+            type_col = cm["type"]
+            desc_col = cm["description"]
+            in_col = cm["money_in"]
+            out_col = cm["money_out"]
+            balance_col = cm["balance"]
+
             x_pts = sorted([
-                hdr_x["TIPO"] - 2,
-                hdr_x["DESCRIZIONE"] - 2,
-                hdr_x["IN ENTRATA"] - 2,
-                hdr_x["IN USCITA"] - 2,
-                ((hdr_x["IN USCITA"] + hdr_x["SALDO"]) / 2) - 4
+                hdr_x[type_col] - 2,
+                hdr_x[desc_col] - 2,
+                hdr_x[in_col] - 2,
+                hdr_x[out_col] - 2,
+                ((hdr_x[out_col] + hdr_x[balance_col]) / 2) - 4
             ])
 
             if S['show_preview'] and all_page_images:
@@ -348,10 +372,15 @@ def get_trade_republic_data(tr_file) -> list[pd.DataFrame]:
     raw = raw.drop([0]).reset_index(drop=True)
 
     merged = combine_multirow_cells(raw)
-    merged = tidy_money_cols(merged, ["IN ENTRATA", "IN USCITA", "SALDO"])
+    merged = tidy_money_cols(merged)
     merged = validate_types(merged, S["valid_types"])
-    trades = merged[merged['TIPO'] == 'Commercio'].copy()
-    transactions = merged[merged['TIPO'] != 'Commercio'].copy()
+
+    # Use configured trade type name
+    type_col = S["column_mappings"]["type"]
+    trade_type = S.get("trade_type_name", "Commercio")
+
+    trades = merged[merged[type_col] == trade_type].copy()
+    transactions = merged[merged[type_col] != trade_type].copy()
 
     trades = parse_trades(trades)
     trades.reset_index(drop=True, inplace=True)
