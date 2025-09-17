@@ -13,7 +13,7 @@ from pdf2image import convert_from_path
 from tabula import read_pdf
 
 def load_settings(fp: str | Path = "settings.json") -> dict:
-    """@return parsed settings as dict"""
+    """Load settings from JSON file."""
     with open(fp, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -27,6 +27,7 @@ CURRENCY_RE = re.compile(rf"\s*{currency_symbol}")
 
 
 def _bucket_by_y(words, tol=2.0):
+    """Group words by Y coordinate within tolerance."""
     lines = []
     for w in words:
         for line in lines:
@@ -43,6 +44,7 @@ def header_xcoords_in_bbox(
     headers: Dict[str, str],
     anchor: str = None,
 ) -> Dict[str, float]:
+    """Extract header X coordinates from a bounding box using an anchor column."""
     if anchor is None:
         anchor = S.get("anchor_column", "TIPO")
 
@@ -86,7 +88,7 @@ def header_xcoords_in_bbox(
 
 
 def pdf_to_images(path: Path, dpi: int) -> List[np.ndarray]:
-    """@param path pdf file; @param dpi resolution; @return list of pages (RGB)."""
+    """Convert PDF to list of images."""
     pil_pages = convert_from_path(path, dpi=dpi)
     return [np.array(p) for p in pil_pages]
 
@@ -231,10 +233,12 @@ def px_area_to_pts(area_px, page_w_pt, page_h_pt):
 
 
 def setup():
+    """Create input and output directories if they don't exist."""
     if not Path(INPUT_DIR).exists(): Path.mkdir(INPUT_DIR)
     if not Path(OUTPUT_DIR).exists(): Path.mkdir(OUTPUT_DIR)
 
 def parse_trades(trades: pd.DataFrame) -> pd.DataFrame:
+    """Parse trade descriptions to extract ISIN, quantities, and trade types."""
     # Get column names from settings
     cm = S["column_mappings"]
     desc_col = cm["description"]
@@ -284,13 +288,18 @@ def parse_trades(trades: pd.DataFrame) -> pd.DataFrame:
     return trades[[date_col, 'NAME', 'ISIN', 'TRADE_TYPE', 'QUANTITY', 'FEE', 'AMOUNT', 'PRICE']]
 
 
-def get_trade_republic_data(tr_file) -> list[pd.DataFrame]:
+def get_trade_republic_data(tr_file) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Extract transaction and trade data from Trade Republic PDF.
+
+    Returns:
+        Tuple of (transactions_df, trades_df)
+    """
     dfs = []
     
     # Convert all pages to images once if preview is enabled
     all_page_images = None
     if S['show_preview']:
-        print("🖼️  Converting PDF to images for preview...")
+        print("Converting PDF to images for preview...")
         all_page_images = pdf_to_images(tr_file, dpi=S["dpi"])
         all_page_images = resize_pages(all_page_images, tuple(map(int, S["resize_px"]))[:2])
     
@@ -436,7 +445,7 @@ def main():
         # Extract data from PDF
         transactions, trades = get_trade_republic_data(tr_file)
         
-        # Save CSV output (always 3 files)
+        # Save CSV output (2 files)
         save_csv_output(transactions, trades)
         
         print("Processing completed successfully!")
