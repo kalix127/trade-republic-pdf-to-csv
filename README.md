@@ -14,7 +14,6 @@
 - [🔧 Advanced Configuration](#-advanced-configuration)
 - [🐛 Troubleshooting](#-troubleshooting)
 - [📝 License](#-license)
-- [💭 Would You Prefer a Web Solution?](#-would-you-prefer-a-web-solution)
 - [📧 Contact](#-contact)
 - [🤝 Contributing](#-contributing)
 
